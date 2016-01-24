@@ -11,7 +11,10 @@
     <script type="text/javascript" src="/lib/angular-translate/dist/angular-translate.min.js"></script>
     <script type="text/javascript" src="/lib/moment/min/moment.min.js"></script>
     <script type="text/javascript" src="/lib/moment-duration-format/lib/moment-duration-format.js"></script>
-    
+    <script type="text/javascript" src="/lib/d3/d3.min.js"></script>
+    <script type="text/javascript" src="/lib//nvd3/build/nv.d3.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-nvd3/dist/angular-nvd3.min.js"></script>
+    <link rel="stylesheet" href="/lib/nvd3/build/nv.d3.min.css">
     <link rel="stylesheet" type="text/css" href="/lib/bootswatch/cosmo/bootstrap.min.css">
     <style type="text/css">
     .center {
@@ -93,7 +96,7 @@
                 </tr>
             </tbody>
         </table>
-    <div>
+    </div>
     <div ng-if="detail">
         <div class="page-header">
             <h1>Details</h1>
@@ -102,6 +105,9 @@
             <p>This is detail data set</p>
             <small>Test case key : <cite ng-bind="detailPath"></cite></small>
         </blockquote>
+        <nvd3 options="graph.total.options" data="graph.total.data"></nvd3>
+        <nvd3 options="graph.cpu.options" data="graph.cpu.data"></nvd3>
+
         <div class="table-responsive">
             <table class="table table-striped table-hover table-responsive text-center">
                 <thead>
@@ -165,6 +171,7 @@
         'ngResource',
         'ui.bootstrap',
         'pascalprecht.translate',
+        'nvd3',
     ])
     .config(function ($translateProvider) {
 
@@ -199,13 +206,138 @@
                 return d;
             });
         });
+        $scope.graph = {
+            cpu: {
+                options: {
+                    chart: {
+                        type: 'lineWithFocusChart',
+                        height: 450,
+                        margin : {
+                            top: 20,
+                            right: 20,
+                            bottom: 60,
+                            left: 40
+                        },
+                        duration: 500,
+                        useInteractiveGuideline: true,
+                        xAxis: {
+                            axisLabel: 'X Axis',
+                        },
+                        x2Axis: {},
+                        yAxis: {
+                            axisLabel: 'Y Axis',
+                            rotateYLabel: false
+                        },
+                        y2Axis: {},
+                    }
+                },
+                data: [
+                    {
+                        key: 'idle',
+                        values: [],
+                    }, {
+                        key: 'user',
+                        values: [],
+                    }, {
+                        key: 'system',
+                        values: []
+                    }, {
+                        key: 'PrivateDirtyMemory',
+                        values: []
+                    }, {
+                        key: 'PssMemory',
+                        values: []
+                    }, {
+                        key: 'HeapMemory',
+                        values: []
+                    }
+                ]
+            },
+            total: {
+                options: {
+                    chart: {
+                    type: 'pieChart',
+                    height: 450,
+                    donut: true,
+                    x: function(d){return d.key;},
+                    y: function(d){return d.y;},
+                    showLabels: true,
 
+                    pie: {
+                        startAngle: function(d) { return d.startAngle/2 -Math.PI/2 },
+                        endAngle: function(d) { return d.endAngle/2 -Math.PI/2 }
+                    },
+                    duration: 500,
+                    legend: {
+                        margin: {
+                            top: 5,
+                            right: 70,
+                            bottom: 5,
+                            left: 0
+                        }
+                    } }
+                },
+                data: [{
+                    key: 'CPU.idle',
+                    y: 0,
+                }, {
+                    key: 'CPU.user',
+                    y: 0,
+                }, {
+                    key: 'CPU.system',
+                    y: 0,
+                }, {
+                    key: 'PrivateDirtyMemory.native',
+                    y: 0,
+                }, {
+                    key: 'PrivateDirtyMemory.dalvik',
+                    y: 0,
+                }, {
+                    key: 'PrivateDirtyMemory.other',
+                    y: 0,
+                }, {
+                    key: 'PssMemory.native',
+                    y: 0,
+                }, {
+                    key: 'PssMemory.dalvik',
+                    y: 0,
+                }, {
+                    key: 'PssMemory.other',
+                    y: 0,
+                }, {
+                    key: 'HeapMemory.NativeHeapAllocatedSize',
+                    y: 0,
+                }, {
+                    key: 'HeapMemory.NativeHeapFreeSize',
+                    y: 0,
+                }]
+            }
+        }
         $scope.showDetail = function (idx) {
             $scope.detailPath = $scope.data[idx].key;
             DetailFactory.query({
                 path: $scope.detailPath,
             }).$promise.then(function (data) {
                 $scope.detail = data;
+                $scope.detail.forEach(function (obj, idx) {
+                    var a = {};
+                    $scope.graph.cpu.data[0].values.push({x: idx, y: obj.CPU.idle, series:0});
+                    $scope.graph.cpu.data[1].values.push({x: idx, y: obj.CPU.user, series:0});
+                    $scope.graph.cpu.data[2].values.push({x: idx, y: obj.CPU.system, series:0});
+
+                    $scope.graph.cpu.data[3].values.push({x: idx, y: obj.Memory.PrivateDirtyMemory.total, series:0});
+                    $scope.graph.cpu.data[4].values.push({x: idx, y: obj.Memory.PssMemory.total, series:0});
+                    $scope.graph.cpu.data[5].values.push({x: idx, y: obj.Memory.HeapMemory.NativeHeapSize, series:0});
+
+                    $scope.graph.total.data[0].y += obj.CPU.idle;
+                    $scope.graph.total.data[1].y += obj.CPU.user;
+                    $scope.graph.total.data[2].y += obj.CPU.system;
+                    $scope.graph.total.data[3].y += obj.Memory.PrivateDirtyMemory.native;
+                    $scope.graph.total.data[4].y += obj.Memory.PrivateDirtyMemory.dalvik;
+                    $scope.graph.total.data[5].y += obj.Memory.PrivateDirtyMemory.other;
+                    $scope.graph.total.data[6].y += obj.Memory.HeapMemory.NativeHeapAllocatedSize;
+                    $scope.graph.total.data[7].y += obj.Memory.HeapMemory.NativeHeapFreeSize;
+                });
             })
         }
     });
