@@ -1,36 +1,18 @@
 {
   "name": "appium-ui",
-  "version": "1.0.0",
-  "description": "appium-ui",
-  "main": "app.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bongster/appium-ui.git"
-  },
-  "keywords": [
-    "appium"
-  ],
-  "author": "bongster",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bongster/appium-ui/issues"
-  },
-  "homepage": "https://github.com/bongster/appium-ui#readme",
   "dependencies": {
-    "angular": "^1.4.8",
-    "angular-resource": "^1.4.8",
-    "angular-translate": "^2.8.1",
-    "angular-ui-bootstrap": "^1.1.0",
-    "angular-ui-router": "^0.2.15",
-    "bootstrap": "^3.3.6",
-    "bootswatch": "^3.3.6",
-    "ejs": "^2.3.4",
-    "express": "^4.13.3",
-    "moment": "^2.11.1",
-    "moment-duration-format": "^1.3.0"
+    "body-parser": "~1.15.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "ejs": "~2.4.1",
+    "express": "~4.13.4",
+    "less-middleware": "1.0.x",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.0"
   }
 }
