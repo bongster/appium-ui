@@ -2,4 +2,7 @@ language: node_js
 node_js:
   - "6"
 
+notifications:
+  slack: autos-team:iUav6VvstOyxdtb2SvePmtLB
+
 script: "npm test"
