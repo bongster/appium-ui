@@ -33,3 +33,4 @@ npm-debug.log
 /.idea/
 # Complied css
 /public/stylesheets/*.css
+/public/stylesheets/*.css.map
