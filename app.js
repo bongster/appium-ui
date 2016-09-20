@@ -29,7 +29,12 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: true }
 }));
-app.use(require('less-middleware')(path.join(__dirname, 'public')));
+app.use(require('node-sass-middleware')({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: true,
+  sourceMap: true
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
