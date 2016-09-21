@@ -1,0 +1,9 @@
+{
+    "requireCurlyBraces": [
+        "if",
+        "else",
+        "for"
+    ],
+    "validateIndentation": 4,
+    "validateQuoteMarks": "'"
+}

@@ -5,4 +5,8 @@ node_js:
 notifications:
   slack: autos-team:iUav6VvstOyxdtb2SvePmtLB
 
+before_script:
+- npm run jshint
+- npm run jscs
+
 script: "npm test"

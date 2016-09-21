@@ -1,0 +1,19 @@
+{
+    "bitwise": true,
+    "camelcase": true,
+    "curly": false,
+    "eqeqeq": true,
+    "freeze": true,
+    "quotmark": "single",
+    "undef": true,
+    "unused": true,
+    "eqnull": true,
+    "node": true,
+    "nocomma": true,
+    "nonbsp": true,
+    "nonew": true,
+    "globals": {
+        "angular": false,
+        "moment": false
+    }
+}
