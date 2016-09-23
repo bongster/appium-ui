@@ -5,4 +5,4 @@ node_js:
 notifications:
   slack: autos-team:iUav6VvstOyxdtb2SvePmtLB
 
-script: "npm test"
+script: "npm run test-ci"
