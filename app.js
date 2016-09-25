@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-var rotuers = require('./routes/index')(app);
+require('./routes/index')(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

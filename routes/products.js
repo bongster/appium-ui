@@ -7,7 +7,7 @@ router.param('id', function (req, res, next, id) {
         req.model = {
             name: util.format('test %d', id),
             id: id,
-        }
+        };
     }
     
     next();

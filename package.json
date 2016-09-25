@@ -8,7 +8,8 @@
     "test": "./node_modules/.bin/mocha --recursive --require test/support/env --check-leaks --bail test/",
     "jshint": "./node_modules/.bin/jshint --verbose .",
     "jscs": "./node_modules/.bin/jscs .",
-	"test-ci": "npm run jshint && npm run jscs && npm run test"
+	"test-ci": "npm run jshint && npm run jscs && npm run test",
+	"lint": "npm run jshint && npm run jscs"
   },
   "dependencies": {
     "body-parser": "1.15.1",
