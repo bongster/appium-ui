@@ -16,7 +16,35 @@ services:
       - node_modules-frontend-volume:/usr/src/app/node_modules
     ports:
       - 3000:3000
+  rabbitmq:  # referenced -> https://github.com/micahhausler/rabbitmq-compose
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_ERLANG_COOKIE: SWQOKODSQALRPCLNMEQG
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+      RABBITMQ_DEFAULT_VHOST: rabbitmq
+    volumes:
+      - rabbitmq-volume:/var/lib/rabbitmq/mnesia/rabbit@rabbitmq
+    # logging:
+    #   driver: none
+    ports:
+      - 5672:5672
+      - 15672:15672
+  # java-worker-1:
+  #   build:
+  #     context: .
+  #     dockerfile: ./services/worker/java/Dockerfile
+  #   working_dir: /usr/src/app
+  #   command: [bash, './run.sh']
+  #   env_file:
+  #     - ./config/config.env
+  #   volumes:
+  #       - ./services/java_worker/repo:/root/.m2
+  #       - ./services/java_worker:/usr/src/app
+  #       - ./lib/db/java/src/main/java/com/netandhi/ub2ps/db:/usr/src/app/src/main/java/com/netandhi/ub2ps/db
+  #       - ./logs/java-worker:/logs
+
 volumes:
   node_modules-frontend-volume:
-
-  
+  rabbitmq-volume:
