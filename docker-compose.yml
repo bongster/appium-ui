@@ -2,12 +2,12 @@ version: '3'
 
 services:
   frontend:
-    image: node:alpine
+    image: node:carbon
     working_dir: /usr/src/app
     # build:
     #   context: .
     #   dockerfile: services/frontend
-    command: > 
+    command: >
       bash -c "npm install && npm start"
     env_file:
       - ./config/config.env
@@ -31,6 +31,24 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 8081:8081
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+  #   depends_on:
+  #     - mongo
+
   # java-worker-1:
   #   build:
   #     context: .
