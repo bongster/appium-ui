@@ -37,7 +37,16 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
-
+  worker_sample:
+    build:
+      context: .
+      dockerfile: ./services/worker/node/Dockerfile
+    working_dir: /usr/src/app
+    command: >
+      bash -c "npm install && npm run dev"
+    volumes:
+      - ./services/worker/node:/usr/src/app
+      - node_modules-volume:/usr/src/app/node_modules
   # mongo-express:
   #   image: mongo-express
   #   restart: always
@@ -66,3 +75,4 @@ services:
 volumes:
   node_modules-frontend-volume:
   rabbitmq-volume:
+  node_modules-volume:
