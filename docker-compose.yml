@@ -47,6 +47,22 @@ services:
     volumes:
       - ./services/worker/node:/usr/src/app
       - node_modules-volume:/usr/src/app/node_modules
+  dashbaord:
+    image: node:carbon
+    working_dir: /usr/src/app
+    # build:
+    #   context: .
+    #   dockerfile: services/frontend
+    command: >
+      bash -c "npm install && npm start"
+    env_file:
+      - ./config/config.env
+    volumes:
+      - ./services/dashboard:/usr/src/app
+      - node_modules-frontend-volume:/usr/src/app/node_modules
+    ports:
+      - 3006:3000
+
   # mongo-express:
   #   image: mongo-express
   #   restart: always
